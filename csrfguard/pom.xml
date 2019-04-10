@@ -55,8 +55,8 @@
 					<fork>true</fork>
 					<optimize>true</optimize>
 					<showDeprecation>true</showDeprecation>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>
@@ -98,8 +98,6 @@
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.2.1</version>
 				<configuration>
-					<encoding>UTF-8</encoding>
-					<charset>UTF-8</charset>
 					<archive>
 						<manifest>
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>

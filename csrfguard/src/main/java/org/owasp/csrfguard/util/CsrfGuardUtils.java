@@ -28,6 +28,9 @@
  */
 package org.owasp.csrfguard.util;
 
+import javax.servlet.ServletConfig;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,10 +54,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletConfig;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 
 /**
  *
@@ -399,8 +398,11 @@ public class CsrfGuardUtils {
 		if (objectOrArrayOrCollection instanceof Collection) {
 			Collection collection = (Collection) objectOrArrayOrCollection;
 			Object first = collection.iterator().next();
-			return toArray(collection, first == null ? Object.class : first
-					.getClass());
+			Class clazz = Object.class;
+			if (first != null) {
+				clazz = first.getClass();
+			}
+			return toArray(collection, clazz);
 		}
 		// make an array of the type of object passed in, size one
 		Object array = Array.newInstance(objectOrArrayOrCollection.getClass(),
