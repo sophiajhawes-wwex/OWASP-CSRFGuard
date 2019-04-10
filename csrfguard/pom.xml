@@ -18,8 +18,10 @@
 		</license>
 	</licenses>
 	<scm>
-		<url>https://github.com/sophiajhawes-wwex/OWASP-CSRFGuard</url>
-		<connection>https://github.com/sophiajhawes-wwex/OWASP-CSRFGuard.git</connection>
+		<connection>scm:git:https://github.com/sophiajhawes-wwex/OWASP-CSRFGuard.git</connection>
+		<developerConnection>scm:git:https://github.com/sophiajhawes-wwex/OWASP-CSRFGuard.git</developerConnection>
+		<url>scm:git:https://github.com/sophiajhawes-wwex/OWASP-CSRFGuard.git</url>
+		<tag>master</tag>
 	</scm>
 	<developers>
 		<developer>
