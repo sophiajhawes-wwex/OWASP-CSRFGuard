@@ -28,6 +28,13 @@
  */
 package org.owasp.csrfguard.config;
 
+import org.owasp.csrfguard.CsrfGuardServletContextListener;
+import org.owasp.csrfguard.action.IAction;
+import org.owasp.csrfguard.log.ILogger;
+import org.owasp.csrfguard.servlet.JavaScriptServlet;
+import org.owasp.csrfguard.util.CsrfGuardUtils;
+
+import javax.servlet.ServletConfig;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -38,14 +45,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import javax.servlet.ServletConfig;
-
-import org.owasp.csrfguard.CsrfGuardServletContextListener;
-import org.owasp.csrfguard.action.IAction;
-import org.owasp.csrfguard.log.ILogger;
-import org.owasp.csrfguard.servlet.JavaScriptServlet;
-import org.owasp.csrfguard.util.CsrfGuardUtils;
 
 /**
  * ConfifgurationProvider based on a java.util.Properties object.
@@ -295,7 +294,11 @@ public class PropertiesConfigurationProvider implements ConfigurationProvider {
 	 * @see #commonSubstitutions(String)
 	 */
 	public static String propertyString(Properties properties, String propertyName) {
-		String value = properties.getProperty(propertyName);
+		String value = System.getProperty(propertyName);
+		if (value == null) {
+			value = properties.getProperty(propertyName);
+		}
+
 		value = commonSubstitutions(value);
 		return value;
 	}
@@ -309,7 +312,11 @@ public class PropertiesConfigurationProvider implements ConfigurationProvider {
 	 * @see #commonSubstitutions(String)
 	 */
 	public static String propertyString(Properties properties, String propertyName, String defaultValue) {
-		String value = properties.getProperty(propertyName, defaultValue);
+		String value = System.getProperty(propertyName);
+		if (value == null) {
+			value = properties.getProperty(propertyName, defaultValue);
+		}
+
 		value = commonSubstitutions(value);
 		return value;
 	}
