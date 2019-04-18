@@ -1,17 +1,16 @@
 package org.owasp.csrfguard;
 
+import org.owasp.csrfguard.config.overlay.ConfigurationOverlayProvider;
+import org.owasp.csrfguard.util.Streams;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import org.owasp.csrfguard.config.overlay.ConfigurationOverlayProvider;
-import org.owasp.csrfguard.util.Streams;
 
 public class CsrfGuardServletContextListener implements ServletContextListener {
 
@@ -75,6 +74,7 @@ public class CsrfGuardServletContextListener implements ServletContextListener {
 			}
 			
 			properties.load(is);
+			onLoadingProperties(properties);
 			CsrfGuard.load(properties);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -84,6 +84,10 @@ public class CsrfGuardServletContextListener implements ServletContextListener {
 
 
 		printConfigIfConfigured(context, "Printing properties before Javascript servlet, note, the javascript properties might not be initialized yet: ");
+	}
+
+	protected void onLoadingProperties(Properties properties) {
+
 	}
 
 	/**
