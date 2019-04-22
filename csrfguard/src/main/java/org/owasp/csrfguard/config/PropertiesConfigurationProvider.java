@@ -99,7 +99,7 @@ public class PropertiesConfigurationProvider implements ConfigurationProvider {
 	private Properties propertiesCache;
 	
 	private String domainOrigin;
-	
+
 	public PropertiesConfigurationProvider(Properties properties) {
 		try {
 			this.propertiesCache = properties;
@@ -265,6 +265,8 @@ public class PropertiesConfigurationProvider implements ConfigurationProvider {
 				this.javascriptRefererMatchDomain = Boolean.valueOf(CsrfGuardUtils.getInitParameter(servletConfig, "referer-match-domain",  
 						propertyString(this.propertiesCache, "org.owasp.csrfguard.JavascriptServlet.refererMatchDomain"), "true"));
 
+				this.javascriptRefererMatchProtocol = Boolean.valueOf(CsrfGuardUtils.getInitParameter(servletConfig, "referer-match-protocol",
+						propertyString(this.propertiesCache, "org.owasp.csrfguard.JavascriptServlet.refererMatchProtocol"), "true"));
 
 				this.javascriptSourceFile = CsrfGuardUtils.getInitParameter(servletConfig, "source-file",  
 						propertyString(this.propertiesCache, "org.owasp.csrfguard.JavascriptServlet.sourceFile"), null);
@@ -478,6 +480,21 @@ public class PropertiesConfigurationProvider implements ConfigurationProvider {
 	public boolean isJavascriptRefererMatchDomain() {
 		this.javascriptInitParamsIfNeeded();
 		return this.javascriptRefererMatchDomain;
+	}
+
+	/**
+	 * if the referer must match protocol
+	 */
+	private boolean javascriptRefererMatchProtocol;
+
+	/**
+	 * if the referer must match domain
+	 * @return the javascriptRefererMatchProtocol
+	 */
+	@Override
+	public boolean isJavascriptRefererMatchProtocol() {
+		this.javascriptInitParamsIfNeeded();
+		return this.javascriptRefererMatchProtocol;
 	}
 
 	/**

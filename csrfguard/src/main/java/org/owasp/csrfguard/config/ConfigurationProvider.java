@@ -28,13 +28,13 @@
  */
 package org.owasp.csrfguard.config;
 
+import org.owasp.csrfguard.action.IAction;
+import org.owasp.csrfguard.log.ILogger;
+
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.owasp.csrfguard.action.IAction;
-import org.owasp.csrfguard.log.ILogger;
 
 public interface ConfigurationProvider {
 
@@ -127,6 +127,8 @@ public interface ConfigurationProvider {
 	 * @return true if the javascrript must match domain
 	 */
 	boolean isJavascriptRefererMatchDomain();
+
+	boolean isJavascriptRefererMatchProtocol();
 
 	boolean isJavascriptInjectIntoAttributes();
 

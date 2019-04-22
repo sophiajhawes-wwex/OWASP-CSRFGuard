@@ -28,15 +28,15 @@
  */
 package org.owasp.csrfguard.config;
 
+import org.owasp.csrfguard.action.IAction;
+import org.owasp.csrfguard.log.ConsoleLogger;
+import org.owasp.csrfguard.log.ILogger;
+
 import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.owasp.csrfguard.action.IAction;
-import org.owasp.csrfguard.log.ConsoleLogger;
-import org.owasp.csrfguard.log.ILogger;
 
 /**
  * ConfigurationProvider which returns all null or empty values (except for the logger).
@@ -221,6 +221,11 @@ public final class NullConfigurationProvider implements ConfigurationProvider {
 	@Override
 	public boolean isJavascriptRefererMatchDomain() {
 		return false;
+	}
+
+	@Override
+	public boolean isJavascriptRefererMatchProtocol() {
+		return true;
 	}
 
 	/**

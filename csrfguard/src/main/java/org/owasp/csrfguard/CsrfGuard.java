@@ -114,7 +114,7 @@ public final class CsrfGuard {
 		configurationProviderExpirableCache.put(Boolean.TRUE, configurationProvider);
 		return configurationProvider;
 	}
-	
+
 	private static class SingletonHolder {
 	  public static final CsrfGuard instance = new CsrfGuard();
 	}
@@ -245,6 +245,10 @@ public final class CsrfGuard {
 
 	public boolean isJavascriptRefererMatchDomain() {
 		return config().isJavascriptRefererMatchDomain();
+	}
+
+	public boolean isJavascriptRefererMatchProtocol() {
+		return config().isJavascriptRefererMatchProtocol();
 	}
 
 	public String getJavascriptCacheControl() {

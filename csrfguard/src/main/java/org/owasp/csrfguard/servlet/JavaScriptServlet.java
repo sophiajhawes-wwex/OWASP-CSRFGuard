@@ -28,6 +28,19 @@
  */
 package org.owasp.csrfguard.servlet;
 
+import org.owasp.csrfguard.CsrfGuard;
+import org.owasp.csrfguard.CsrfGuardServletContextListener;
+import org.owasp.csrfguard.log.LogLevel;
+import org.owasp.csrfguard.util.CsrfGuardUtils;
+import org.owasp.csrfguard.util.Streams;
+import org.owasp.csrfguard.util.Strings;
+import org.owasp.csrfguard.util.Writers;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -36,20 +49,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.owasp.csrfguard.CsrfGuard;
-import org.owasp.csrfguard.CsrfGuardServletContextListener;
-import org.owasp.csrfguard.log.LogLevel;
-import org.owasp.csrfguard.util.CsrfGuardUtils;
-import org.owasp.csrfguard.util.Streams;
-import org.owasp.csrfguard.util.Strings;
-import org.owasp.csrfguard.util.Writers;
 
 public final class JavaScriptServlet extends HttpServlet {
 
@@ -111,7 +110,7 @@ public final class JavaScriptServlet extends HttpServlet {
 			String url = request.getRequestURL().toString();
 			String requestProtocolAndDomain = CsrfGuardUtils.httpProtocolAndDomain(url);
 			String refererProtocolAndDomain = CsrfGuardUtils.httpProtocolAndDomain(refererHeader);
-			if (!refererProtocolAndDomain.equals(requestProtocolAndDomain)) {
+			if (!domainsMatch(requestProtocolAndDomain, refererProtocolAndDomain)) {
 				CsrfGuard.getInstance().getLogger().log(LogLevel.Error, "Referer domain " + refererHeader + " does not match request domain: " + url);
 				hasError = true;
 				response.sendError(404);
@@ -130,6 +129,17 @@ public final class JavaScriptServlet extends HttpServlet {
 			
 			writeJavaScript(request, response);
 		}
+	}
+
+	protected boolean domainsMatch(String requestProtocolAndDomain, String refererProtocolAndDomain) {
+		if (CsrfGuard.getInstance().isJavascriptRefererMatchProtocol()) {
+			return refererProtocolAndDomain.equals(requestProtocolAndDomain);
+		}
+
+		String requestDomain = requestProtocolAndDomain.substring(requestProtocolAndDomain.indexOf("://") + 3);
+		String refererDomain = refererProtocolAndDomain.substring(refererProtocolAndDomain.indexOf("://") + 3);
+
+		return refererDomain.equals(requestDomain);
 	}
 
 	/**
